@@ -55,7 +55,7 @@ const cards = [
 const {height} = Dimensions.get('window');
 
 const Page = ({navigation}) => {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(5);
   const [space, setSpace] = useState([]);
   const [coor, setCoor] = useState([]);
   const [y] = useState(new Animated.Value(0));
@@ -94,19 +94,18 @@ const Page = ({navigation}) => {
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {
-              coor.forEach(
-                (item, i) => {
-                  Animated.spring(coor[i].anim, {
+              Animated.parallel(
+                coor.map((item, i) =>
+                  Animated.spring(item.anim, {
                     bounciness: 4,
                     toValue: (cardHeight - cardTitle) * -i,
                     duration: 500,
                     useNativeDriver: true,
-                  }).start();
-                },
-                () => {
-                  setSelected(null);
-                },
-              );
+                  }),
+                ),
+              ).start(() => {
+                setSelected(null);
+              });
             }}>
             {selected && <Text>Done</Text>}
           </TouchableOpacity>
@@ -142,7 +141,7 @@ const Page = ({navigation}) => {
                               },
                             ],
                           }}>
-                          <Text>card {i}</Text>
+                          <Text>{card.color}</Text>
                         </Animated.View>
                       );
                     } else {
@@ -158,7 +157,7 @@ const Page = ({navigation}) => {
                               },
                             ],
                           }}>
-                          <Text>card {i}</Text>
+                          <Text>{card.name}</Text>
                         </Animated.View>
                       );
                     }
@@ -205,7 +204,7 @@ const Page = ({navigation}) => {
                       }).start();
                     } else {
                       Animated.spring(coor[i].anim, {
-                        toValue: 800,
+                        toValue: (cardHeight - cardTitle) * -i,
                         duration: 500,
                         useNativeDriver: true,
                       }).start();
@@ -214,6 +213,7 @@ const Page = ({navigation}) => {
                 }}
                 style={[
                   {
+                    backgroundColor: 'rgba(0,0,0,0.2)',
                     height: cards.length * 75,
                   },
                 ]}
