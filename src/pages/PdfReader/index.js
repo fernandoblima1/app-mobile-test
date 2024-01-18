@@ -6,6 +6,8 @@ export default function PdfReader() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0); // Defina o número total de páginas do seu PDF
 
+  const colors = ['#007236', '#034EA2'];
+
   const source = {
     uri: pdfUri,
     cache: true,
@@ -64,9 +66,7 @@ export default function PdfReader() {
               fontSize: 11,
               fontWeight: 'bold',
               color: 'black',
-            }}>
-            Verifique a autenticidade do QR Code com o serviço de
-          </Text>
+            }}></Text>
           <Text
             style={{
               color: 'blue',
